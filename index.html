@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Programa Deportivo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+  <!-- BARRA DE NAVEGACIÓN (NO SE IMPRIME) -->
+  <header class="navbar no-print">
+    <div class="nav-container">
+      <div class="brand">
+        <i class="fas fa-running"></i>
+        <span>Programa Deportivo</span>
+      </div>
+      <nav class="nav-links">
+        <button class="nav-btn active" data-target="tab-registrar">
+          <i class="fas fa-user-plus"></i> Registro
+        </button>
+        <button class="nav-btn protected" data-target="tab-asistencia">
+          <i class="fas fa-clipboard-check"></i> Asistencia <i class="fas fa-lock lock-icon"></i>
+        </button>
+        <button class="nav-btn protected" data-target="tab-buscar">
+          <i class="fas fa-search"></i> Consultar <i class="fas fa-lock lock-icon"></i>
+        </button>
+        <button class="nav-btn protected" data-target="tab-informes">
+          <i class="fas fa-print"></i> Reportes <i class="fas fa-lock lock-icon"></i>
+        </button>
+      </nav>
+      <div class="user-status">
+        <span id="user-status-text">Acceso: Invitado</span>
+        <button id="btn-logout" class="btn-sm" style="display: none;"><i class="fas fa-sign-out-alt"></i> Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- PESTAÑA 1: REGISTRO Y FORMULARIO -->
+    <div id="tab-registrar" class="tab-content active no-print">
+      <div class="card">
+        <h2><i class="fas fa-user-plus"></i> Registro de Participante</h2>
+        <form id="formulario">
+          <div class="form-grid">
+            <!-- Nombre con Máscara (solo letras) -->
+            <div class="form-group">
+              <label for="nombre">Nombre Completo *</label>
+              <input type="text" id="nombre" required placeholder="Ej: Juan Pérez">
+            </div>
+            <div class="form-group">
+              <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+              <input type="date" id="fechaNacimiento" required>
+            </div>
+            <div class="form-group">
+              <label for="edadCalculada">Edad</label>
+              <input type="text" id="edadCalculada" readonly placeholder="Automática">
+            </div>
+            <div class="form-group">
+              <label for="categoriaCalculada">Categoría</label>
+              <input type="text" id="categoriaCalculada" readonly placeholder="Automática">
+            </div>
+            <div class="form-group">
+              <label for="genero">Género *</label>
+              <select id="genero" required>
+                <option value="">Seleccione...</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+              </select>
+            </div>
+            <!-- Grado como Menú Desplegable -->
+            <div class="form-group">
+              <label for="grado">Grado *</label>
+              <select id="grado" required>
+                <option value="">Seleccione...</option>
+                <option value="1ro Primaria">1ro Primaria</option>
+                <option value="2do Primaria">2do Primaria</option>
+                <option value="3ro Primaria">3ro Primaria</option>
+                <option value="4to Primaria">4to Primaria</option>
+                <option value="5to Primaria">5to Primaria</option>
+                <option value="6to Primaria">6to Primaria</option>
+                <option value="1ro Básico">1ro Básico</option>
+                <option value="2do Básico">2do Básico</option>
+                <option value="3ro Básico">3ro Básico</option>
+                <option value="4to Diversificado">4to Diversificado</option>
+                <option value="5to Diversificado">5to Diversificado</option>
+              </select>
+            </div>
+            <!-- Sección Máscara (solo números) -->
+            <div class="form-group">
+              <label for="seccion">Sección *</label>
+              <input type="text" id="seccion" required placeholder="Ej: 1" maxlength="3" inputmode="numeric">
+            </div>
+            <div class="form-group">
+              <label for="deporte">Deporte *</label>
+              <select id="deporte" required>
+                <option value="">Seleccione...</option>
+                <option value="Fútbol">Fútbol</option>
+                <option value="Baloncesto">Baloncesto</option>
+                <option value="Voleibol">Voleibol</option>
+                <option value="Balonmano">Balonmano</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono Tutor *</label>
+              <input type="tel" id="telefono" required placeholder="Ej: 5555-5555">
+            </div>
+            <div class="form-group">
+              <label for="correo">Correo Electrónico *</label>
+              <input type="email" id="correo" required placeholder="Ej: tutor@correo.com">
+            </div>
+          </div>
+          <div class="form-group full-width" style="margin-top: 15px;">
+            <label for="mensaje">Observaciones / Comentarios</label>
+            <textarea id="mensaje" rows="2" placeholder="Notas médicas o alergias..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 15px;">
+            <i class="fas fa-save"></i> Guardar Registro del Participante
+          </button>
+        </form>
+        <div id="estado" class="text-muted" style="margin-top: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 2: ASISTENCIA -->
+    <div id="tab-asistencia" class="tab-content no-print">
+      <div class="card">
+        <h2><i class="fas fa-clipboard-user"></i> Control de Asistencia Diaria</h2>
+        <div class="filter-panel" style="margin-bottom: 15px;">
+          <div>
+            <label><strong>Deporte:</strong></label>
+            <select id="asistencia-deporte" class="form-control">
+              <option value="Todos">Todos los Deportes</option>
+              <option value="Fútbol">Fútbol</option>
+              <option value="Baloncesto">Baloncesto</option>
+              <option value="Voleibol">Voleibol</option>
+              <option value="Natación">Natación</option>
+            </select>
+          </div>
+          <div>
+            <label><strong>Categoría:</strong></label>
+            <select id="asistencia-categoria" class="form-control">
+              <option value="Todas">Todas las Categorías</option>
+              <option value="Pre-infantil">Pre-infantil</option>
+              <option value="Infantil A">Infantil A</option>
+              <option value="Infantil B">Infantil B</option>
+              <option value="Infanto juvenil">Infanto juvenil</option>
+              <option value="Juvenil">Juvenil</option>
+              <option value="Mayor / Libre">Mayor / Libre</option>
+            </select>
+          </div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Deporte</th>
+              <th>Categoría</th>
+              <th>Asistencia</th>
+            </tr>
+          </thead>
+          <tbody id="lista-asistencia-body">
+            <!-- Cargado dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: BÚSQUEDA / CONSULTA -->
+    <div id="tab-buscar" class="tab-content no-print">
+      <div class="card">
+        <h2><i class="fas fa-search"></i> Consultar Base de Datos</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <input type="text" id="input-buscar" class="form-control" style="flex: 1;" placeholder="Escribe un nombre o correo...">
+          <button id="btn-buscar" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+        <div id="resultado-busqueda"></div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 4: INFORMES E IMPRESIÓN PERSONALIZADA -->
+    <div id="tab-informes" class="tab-content">
+      <div class="no-print card">
+        <h2><i class="fas fa-print"></i> Generador e Impresión de Reportes</h2>
+        <p class="text-muted" style="margin-bottom: 15px;">Filtra la información, selecciona los módulos que deseas incluir y haz clic en imprimir.</p>
+        
+        <!-- FILTROS DE RANGO -->
+        <div class="filter-panel">
+          <div>
+            <label><strong>Deporte:</strong></label>
+            <select id="filtro-deporte-reporte" class="form-control">
+              <option value="Todos">Todos los Deportes</option>
+              <option value="Fútbol">Fútbol</option>
+              <option value="Baloncesto">Baloncesto</option>
+              <option value="Voleibol">Voleibol</option>
+              <option value="Natación">Natación</option>
+            </select>
+          </div>
+          <div>
+            <label><strong>Fecha Inicio:</strong></label>
+            <input type="date" id="filtro-fecha-inicio" class="form-control">
+          </div>
+          <div>
+            <label><strong>Fecha Fin:</strong></label>
+            <input type="date" id="filtro-fecha-fin" class="form-control">
+          </div>
+        </div>
+
+        <!-- SELECCIÓN MÚLTIPLE DE MÓDULOS -->
+        <div class="checkbox-panel">
+          <h3 style="font-size: 1rem; color: #0f172a;"><i class="fas fa-tasks"></i> Módulos a Incluir en la Impresión</h3>
+          <div class="checkbox-grid">
+            <label><input type="checkbox" class="chk-modulo" value="sec-estadisticas" checked> Estadísticas Generales del Programa</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-asistencia-deporte" checked> Asistencia Semanal / Mensual por Deporte</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-asistencia-meses" checked> Asistencia por Rango de Fechas / Meses</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-asistencia-genero" checked> Asistencia por Género</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-ranking" checked> Ranking de Participación por Estudiante</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-porcentaje-ind" checked> Porcentaje de Asistencia Individual</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-ausencias" checked> Listado de Ausencias</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-inscritos-deporte" checked> Total de Inscritos por Deporte</label>
+            <label><input type="checkbox" class="chk-modulo" value="sec-inscritos-categoria" checked> Total de Inscritos por Categoría</label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button id="btn-generar-vista" class="btn btn-secondary"><i class="fas fa-sync"></i> Actualizar Datos</button>
+          <button id="btn-imprimir-reporte" class="btn btn-primary"><i class="fas fa-print"></i> Imprimir / Exportar a PDF</button>
+        </div>
+      </div>
+
+      <!-- ÁREA DINÁMICA QUE SE IMPRIME -->
+      <div id="area-impresion">
+        <div class="header-reporte">
+          <h1>Reporte Oficial del Programa Deportivo</h1>
+          <p id="subtitulo-reporte">Sistema de Control de Asistencia y Gestión</p>
+        </div>
+
+        <!-- MÓDULO 1: Estadísticas Generales -->
+        <div id="sec-estadisticas" class="modulo-reporte">
+          <h2>Estadísticas Generales del Programa Deportivo</h2>
+          <div class="stat-boxes">
+            <div class="stat-box">
+              <div id="rep-stat-total" class="num">0</div>
+              <div class="lbl">TOTAL INSCRITOS</div>
+            </div>
+            <div class="stat-box">
+              <div id="rep-stat-asistencia" class="num color-green">0%</div>
+              <div class="lbl">ASISTENCIA GLOBAL</div>
+            </div>
+            <div class="stat-box">
+              <div id="rep-stat-deportes" class="num color-blue">0</div>
+              <div class="lbl">DEPORTES ACTIVOS</div>
+            </div>
+            <div class="stat-box">
+              <div id="rep-stat-ausencias" class="num color-red">0</div>
+              <div class="lbl">AUSENCIAS TOTALES</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MÓDULO 2: Asistencia Semanal / Mensual por Deporte -->
+        <div id="sec-asistencia-deporte" class="modulo-reporte">
+          <h2>Asistencia Semanal y Mensual por Deporte</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Deporte</th>
+                <th>Inscritos</th>
+                <th>Presentes</th>
+                <th>Ausentes</th>
+                <th>% Asistencia</th>
+              </tr>
+            </thead>
+            <tbody id="tb-asistencia-deporte"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 3: Asistencia por Rango de Fechas / Meses -->
+        <div id="sec-asistencia-meses" class="modulo-reporte">
+          <h2>Asistencia por Rango de Fechas / Meses</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Período / Mes</th>
+                <th>Total Registros</th>
+                <th>Asistencias</th>
+                <th>% Cumplimiento</th>
+              </tr>
+            </thead>
+            <tbody id="tb-asistencia-meses"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 4: Asistencia por Género -->
+        <div id="sec-asistencia-genero" class="modulo-reporte">
+          <h2>Asistencia por Género</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Género</th>
+                <th>Total Inscritos</th>
+                <th>Promedio de Asistencia</th>
+              </tr>
+            </thead>
+            <tbody id="tb-asistencia-genero"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 5: Ranking de Participación por Estudiante -->
+        <div id="sec-ranking" class="modulo-reporte">
+          <h2>Ranking de Participación por Estudiante</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Deporte</th>
+                <th>Categoría</th>
+                <th>% Asistencia</th>
+              </tr>
+            </thead>
+            <tbody id="tb-ranking"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 6: Porcentaje de Asistencia Individual -->
+        <div id="sec-porcentaje-ind" class="modulo-reporte">
+          <h2>Porcentaje de Asistencia Individual</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Estudiante</th>
+                <th>Deporte</th>
+                <th>Clases Totales</th>
+                <th>Asistidas</th>
+                <th>% Individual</th>
+              </tr>
+            </thead>
+            <tbody id="tb-porcentaje-ind"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 7: Listado de Ausencias -->
+        <div id="sec-ausencias" class="modulo-reporte">
+          <h2>Listado de Ausencias Registradas</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Estudiante</th>
+                <th>Deporte</th>
+                <th>Categoría</th>
+                <th>Teléfono Tutor</th>
+              </tr>
+            </thead>
+            <tbody id="tb-ausencias"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 8: Total de Inscritos por Deporte -->
+        <div id="sec-inscritos-deporte" class="modulo-reporte">
+          <h2>Total de Inscritos por Deporte</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Deporte</th>
+                <th>Total Inscritos</th>
+                <th>Porcentaje del Total</th>
+              </tr>
+            </thead>
+            <tbody id="tb-inscritos-deporte"></tbody>
+          </table>
+        </div>
+
+        <!-- MÓDULO 9: Total de Inscritos por Categoría -->
+        <div id="sec-inscritos-categoria" class="modulo-reporte">
+          <h2>Total de Inscritos por Categoría</h2>
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th>Total Inscritos</th>
+                <th>Distribución</th>
+              </tr>
+            </thead>
+            <tbody id="tb-inscritos-categoria"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL AUTENTICACIÓN (NO SE IMPRIME) -->
+  <div id="login-modal" class="modal no-print">
+    <div class="modal-content">
+      <span id="modal-close" class="modal-close">&times;</span>
+      <h3 style="margin-bottom: 15px;"><i class="fas fa-lock"></i> Acceso Administrador</h3>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-user">Usuario</label>
+          <input type="text" id="login-user" required>
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="login-pass">Contraseña</label>
+          <input type="password" id="login-pass" required>
+        </div>
+        <div id="login-error" style="color: #dc2626; margin-top: 8px; font-size: 0.85rem;"></div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

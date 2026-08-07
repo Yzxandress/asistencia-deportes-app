@@ -1,0 +1,395 @@
+/* ==========================================
+   1. RESET Y BASE GENERAL
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* ==========================================
+   2. NAVBAR Y NAVEGACIÓN
+   ========================================== */
+.navbar {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 14px 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #38bdf8;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-btn:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.nav-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.lock-icon {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.user-status {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ==========================================
+   3. TARJETAS, FORMULARIOS Y CONTENEDORES
+   ========================================== */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin-bottom: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  color: #0f172a;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.form-control, input, select, textarea {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, input:focus, select:focus, textarea:focus {
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+input[readonly] {
+  background-color: #e2e8f0;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   4. BOTONES Y PESTAÑAS
+   ========================================== */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary { background: #2563eb; color: #ffffff; }
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-secondary { background: #64748b; color: #ffffff; }
+.btn-secondary:hover { background: #475569; }
+
+.btn-sm { 
+  padding: 5px 10px; 
+  font-size: 0.8rem; 
+  background: #ef4444; 
+  color: #ffffff; 
+  border: none; 
+  border-radius: 6px; 
+  cursor: pointer; 
+}
+.btn-sm:hover { background: #dc2626; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.text-muted { color: #64748b; font-size: 0.85rem; }
+
+/* ==========================================
+   5. PESTAÑA DE REPORTES Y CHECKBOXES
+   ========================================== */
+.filter-panel, .checkbox-panel {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.filter-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.checkbox-grid label {
+  font-size: 0.9rem;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.checkbox-grid label:hover {
+  background: #f1f5f9;
+}
+
+/* ==========================================
+   6. VISTA PREVIA Y REPORTES IMPRESOS
+   ========================================== */
+#area-impresion {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.header-reporte {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #0f172a;
+}
+
+.header-reporte h1 {
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.modulo-reporte {
+  margin-bottom: 30px;
+}
+
+.modulo-reporte h2 {
+  font-size: 1.1rem;
+  color: #0f172a;
+  border-left: 4px solid #2563eb;
+  padding-left: 10px;
+  margin-bottom: 12px;
+}
+
+.stat-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 15px;
+  text-align: center;
+}
+
+.stat-box {
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.stat-box .num { font-size: 1.6rem; font-weight: 700; color: #2563eb; }
+.stat-box .num.color-green { color: #16a34a; }
+.stat-box .num.color-blue { color: #0284c7; }
+.stat-box .num.color-red { color: #dc2626; }
+.stat-box .lbl { font-size: 0.75rem; color: #64748b; font-weight: 700; margin-top: 4px; }
+
+.tabla-reporte, .data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.tabla-reporte th, .tabla-reporte td,
+.data-table th, .data-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.tabla-reporte th, .data-table th {
+  background-color: #f1f5f9;
+  color: #334155;
+  font-weight: 600;
+}
+
+.tabla-reporte tr:nth-child(even),
+.data-table tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* ==========================================
+   7. MODAL DE LOGIN
+   ========================================== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.active { display: flex; }
+
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px; right: 20px;
+  font-size: 1.4rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.modal-close:hover { color: #0f172a; }
+
+/* ==========================================
+   8. REGLAS EXCLUSIVAS DE IMPRESIÓN (PDF/PRINT)
+   ========================================== */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .no-print, .navbar, .modal, button, input, select {
+    display: none !important;
+  }
+
+  #area-impresion, #area-impresion * {
+    visibility: visible;
+  }
+
+  #area-impresion {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .modulo-reporte {
+    page-break-inside: avoid;
+    margin-bottom: 25px;
+  }
+
+  .modulo-reporte.oculto-print {
+    display: none !important;
+  }
+}
